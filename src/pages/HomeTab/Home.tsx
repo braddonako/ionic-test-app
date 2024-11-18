@@ -2,14 +2,14 @@ import { IonContent, IonPage, IonFab, IonFabButton, IonIcon } from '@ionic/react
 import { add } from 'ionicons/icons';
 import { useHistory, useLocation } from 'react-router';
 import { useJobs } from '../../hooks/useJobs';
-import { JobCard } from './JobCard';
+import { JobCard } from '../../components/JobCard';
 import { useEffect } from 'react';
 import { useIonViewWillEnter } from '@ionic/react';
 
 
 const Home: React.FC = () => {
   const history = useHistory();
-  const { jobs, loading, error, refreshJobs } = useJobs();
+  const { jobs, loading, error, refreshJobs, deleteJob } = useJobs();
   const location = useLocation();
 
   useIonViewWillEnter(() => {
@@ -24,6 +24,11 @@ const Home: React.FC = () => {
       history.push(`/job-details/${jobId}`); 
   };
 
+  const handleDeleteJob = (jobId: string) => {
+    deleteJob(jobId);
+    refreshJobs();
+  };
+
   return (
     <IonPage>
       <IonContent>
@@ -35,6 +40,7 @@ const Home: React.FC = () => {
             key={job.id}
             job={job}
             onClick={() => handleJobClick(job.id!)}
+            onDelete={() => handleDeleteJob(job.id!)}
           />
         ))}
 
