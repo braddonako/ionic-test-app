@@ -1,13 +1,8 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonTextarea, IonDatetime, IonSelect, IonSelectOption, IonButton, IonButtons, IonBackButton } from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
-import { useJobs } from '../../hooks/useJobs';
+import { Note, useJobs } from '../../hooks/useJobs';
 
-interface Note {
-    content: string;
-    timestamp: string;
-    createdAt: number;
-  }
 
 const JobForm: React.FC = () => {
     const history = useHistory();
@@ -15,48 +10,37 @@ const JobForm: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [jobData, setJobData] = useState({
-      companyName: '',
-      position: '',
-      location: '',
-      salary: '',
-      notes: [] as Note[],
-      dateApplied: new Date().toISOString(),
-      status: 'applied' as const
-    });
-    const [currentNote, setCurrentNote] = useState('');
-
-    const handleAddNote = () => {
-      if (currentNote.trim()) {
-        setJobData({
-          ...jobData,
-          notes: [
-            ...jobData.notes,
-            {
-              content: currentNote.trim(),
-              timestamp: new Date().toISOString(),
-              createdAt: new Date().getTime()
-            }
-          ]
-        });
-        setCurrentNote('');
-      }
-    };
-
- 
-  
-    const handleSubmit = async () => {
-        setIsSubmitting(true);
-        setError(null);
-        
-        try {
-          await addJob(jobData);
-          history.replace('/', { refresh: true }); 
-        } catch (error) {
-          console.error('Error saving job application:', error);
-          setError('Failed to save job application. Please try again.');
-        } finally {
-          setIsSubmitting(false);
-        }
+        companyName: '',
+        position: '',
+        location: '',
+        salary: '',
+        notes: [] as Note[],
+        dateApplied: new Date().toISOString(),
+        status: 'applied' as const
+      });
+      const [initialNote, setInitialNote] = useState('');
+    
+      const handleSubmit = async () => {
+          setIsSubmitting(true);
+          setError(null);
+          
+          try {
+            const jobDataToSubmit = {
+              ...jobData,
+              notes: initialNote.trim() ? [{
+                content: initialNote.trim(),
+                timestamp: new Date().toISOString(),
+                createdAt: new Date().getTime()
+              }] : []
+            };
+            await addJob(jobDataToSubmit);
+            history.replace('/', { refresh: true }); 
+          } catch (error) {
+            console.error('Error saving job application:', error);
+            setError('Failed to save job application. Please try again.');
+          } finally {
+            setIsSubmitting(false);
+          }
       };
 
   return (
@@ -125,44 +109,20 @@ const JobForm: React.FC = () => {
         </IonItem>
 
         <IonItem>
-        <IonLabel position="stacked">Add Note</IonLabel>
-        <IonTextarea 
-            value={currentNote}
-            onIonChange={e => setCurrentNote(e.detail.value!)}
-            rows={4}
-            placeholder="Enter your note here..."
-        />
-        <IonButton 
-            expand="block" 
-            className="ion-margin-top" 
-            onClick={handleAddNote}
-            disabled={!currentNote.trim()}
-        >
-            Add Note
-        </IonButton>
+            <IonLabel position="stacked">Note</IonLabel>
+            <IonTextarea 
+                value={initialNote}
+                onIonChange={e => setInitialNote(e.detail.value!)}
+                rows={4}
+                placeholder="Enter your note here..."
+            />
         </IonItem>
 
-        {jobData.notes.length > 0 && (
-        <IonItem>
-            <IonLabel position="stacked">Previous Notes</IonLabel>
-            <div className="ion-padding">
-            {jobData.notes.map((note, index) => (
-                <div key={index} className="ion-margin-bottom">
-                <p>{note.content}</p>
-                <small className="ion-text-muted">
-                    {new Date(note.timestamp).toLocaleString()}
-                </small>
-                </div>
-            ))}
-            </div>
-        </IonItem>
-        )}
-
-        <IonButton expand="block" className="ion-margin-top" onClick={handleSubmit}>
-          Save Job Application
-        </IonButton>
-      </IonContent>
-    </IonPage>
+            <IonButton expand="block" className="ion-margin-top" onClick={handleSubmit}>
+                Save Job Application
+            </IonButton>
+         </IonContent>
+        </IonPage>
   );
 };
 
