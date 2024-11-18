@@ -65,7 +65,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 const LoginRoute: React.FC = () => {
   const { user } = useAuth();
   
-  return user ? <Redirect to="/tab1" /> : <Login />;
+  return user ? <Redirect to="/home" /> : <Login />;
 };
 
 const App: React.FC = () => (
@@ -89,11 +89,11 @@ const App: React.FC = () => (
                   <Settings />
                 </Route>
                 <Route exact path="/">
-                  <Redirect to="/tab1" />
+                  <Redirect to="/home" />
                 </Route>
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
-                <IonTabButton tab="tab1" href="/tab1">
+                <IonTabButton tab="home" href="/home">
                   <IonIcon aria-hidden="true" icon={triangle} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
@@ -101,7 +101,7 @@ const App: React.FC = () => (
                   <IonIcon aria-hidden="true" icon={ellipse} />
                   <IonLabel>Tab 2</IonLabel>
                 </IonTabButton>
-                <IonTabButton tab="tab3" href="/tab3">
+                <IonTabButton tab="settings" href="/settings">
                   <IonIcon aria-hidden="true" icon={square} />
                   <IonLabel>Settings</IonLabel>
                 </IonTabButton>
