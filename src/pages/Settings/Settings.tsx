@@ -1,8 +1,8 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
-import { useAuth } from '../context/AuthContext';
-import './Tab3.css';
+import { useAuth } from '../../context/AuthContext';
+import './Settings.css';
 
-const Tab3: React.FC = () => {
+const Settings: React.FC = () => {
   const { logout } = useAuth();
 
   const handleLogout = async () => {
@@ -38,4 +38,4 @@ const Tab3: React.FC = () => {
   );
 };
 
-export default Tab3;
+export default Settings;
