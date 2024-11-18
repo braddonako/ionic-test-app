@@ -2,6 +2,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Note, useJobs } from '../../hooks/useJobs';
+import { formatSalary } from '../../utils/utils';
 
 
 const JobForm: React.FC = () => {
@@ -81,9 +82,16 @@ const JobForm: React.FC = () => {
         <IonItem>
           <IonLabel position="stacked">Expected Salary</IonLabel>
           <IonInput 
-            type="number"
-            value={jobData.salary}
-            onIonChange={e => setJobData({...jobData, salary: e.detail.value!})}
+            type="text"
+            value={formatSalary(jobData.salary)}
+            onIonChange={e => {
+              const rawValue = e.detail.value?.replace(/[^0-9]/g, '');
+              const formattedValue = rawValue ? formatSalary(rawValue) : '';
+              const element = e.target as HTMLIonInputElement;
+              element.value = formattedValue;
+              setJobData({...jobData, salary: rawValue || ''});
+            }}
+            placeholder="$150,000"
           />
         </IonItem>
 
