@@ -91,7 +91,7 @@ const JobForm: React.FC = () => {
               element.value = formattedValue;
               setJobData({...jobData, salary: rawValue || ''});
             }}
-            placeholder="$150,000"
+            placeholder="$XXX,XXX"
           />
         </IonItem>
 
