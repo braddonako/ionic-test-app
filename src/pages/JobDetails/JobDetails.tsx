@@ -1,6 +1,6 @@
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle,IonSelect, IonSelectOption, IonItem, IonLabel, IonTextarea, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonIcon, IonChip } from '@ionic/react';
 import { useParams } from 'react-router';
-import { Note, useJob } from '../../hooks/useJobs'; 
+import { JobStatus, Note, useJob } from '../../hooks/useJobs'; 
 import { format } from 'date-fns';
 import { useJobs } from '../../hooks/useJobs'; 
 import { useEffect, useState } from 'react';
@@ -8,7 +8,7 @@ import { formatSalary } from '../../utils/utils';
 import './jobDetails.css';
 import { addCircleOutline, calendarOutline, cashOutline, locationOutline, timeOutline, trashOutline } from 'ionicons/icons';
 
-export type JobStatus = 'applied' | 'interviewing' | 'offered' | 'rejected';
+
 
 const JobDetails: React.FC = () => {
   const { jobId } = useParams<{ jobId: string }>();

@@ -9,6 +9,8 @@ export interface Note {
   createdAt: number;
 }
 
+export type JobStatus = 'applied' | 'interviewing' | 'offered' | 'rejected';
+
 export interface Job {
   id?: string;
   userId: string;

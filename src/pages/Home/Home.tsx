@@ -2,7 +2,7 @@ import { IonContent, IonPage, IonFab, IonFabButton, IonIcon, IonText } from '@io
 import { add } from 'ionicons/icons';
 import { useHistory, useLocation } from 'react-router';
 import { useJobs } from '../../hooks/useJobs';
-import { JobCard } from '../../components/JobCard';
+import { JobCard } from './JobCard';
 import { useIonViewWillEnter } from '@ionic/react';
 import './Home.css';
 

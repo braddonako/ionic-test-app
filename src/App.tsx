@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
-import Home from './pages/HomeTab/Home';
+import Home from './pages/Home/Home';
 import Tab2 from './pages/Tab2';
 import Settings from './pages/Settings/Settings';
 import { AuthProvider } from './context/AuthContext';

@@ -47,10 +47,6 @@
     color: white;
   }
   
-  .notes-section {
-    margin-top: 24px;
-  }
-  
   .note-input {
     background: var(--ion-color-light);
     border-radius: 8px;
