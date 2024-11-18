@@ -1,6 +1,7 @@
 import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip, IonItemSliding, IonItem, IonItemOptions, IonItemOption } from '@ionic/react';
 import { Job } from '../hooks/useJobs';
 import { JobStatus } from '../pages/JobDetails/JobDetails';
+import { formatSalary } from '../utils/utils';
 
 interface JobCardProps {
   job: Job;

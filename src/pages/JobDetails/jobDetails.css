@@ -1,0 +1,91 @@
+.job-header {
+    background: var(--ion-color-light);
+    padding: 20px;
+    border-bottom: 1px solid var(--ion-color-light-shade);
+  }
+  
+  .job-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--ion-color-dark);
+  }
+  
+  .job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  
+  .status-select {
+    width: 100%;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --padding-top: 0.75rem;
+    --padding-bottom: 0.75rem;
+    border-radius: 8px;
+  }
+  
+  /* Status-specific colors with white text */
+  .status-select.status-applied {
+    background: var(--ion-color-primary);
+    color: white;
+  }
+  
+  .status-select.status-interviewing {
+    background: var(--ion-color-warning);
+    color: white;
+  }
+  
+  .status-select.status-offered {
+    background: var(--ion-color-success);
+    color: white;
+  }
+  
+  .status-select.status-rejected {
+    background: var(--ion-color-danger);
+    color: white;
+  }
+  
+  .notes-section {
+    margin-top: 24px;
+  }
+  
+  .note-input {
+    background: var(--ion-color-light);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .note-item {
+    margin-bottom: 12px;
+    --background: var(--ion-color-light);
+    border-radius: 8px;
+  }
+  
+  .note-container {
+    width: 100%;
+    padding: 8px 0;
+  }
+  
+  .note-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--ion-color-medium);
+    margin-bottom: 4px;
+  }
+  
+  .note-timestamp {
+    font-size: 12px;
+  }
+  
+  .note-content {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+  
+  .add-note-button {
+    margin-top: 12px;
+  }

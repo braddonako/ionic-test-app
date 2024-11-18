@@ -1,9 +1,12 @@
-import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle,IonSelect, IonSelectOption, IonItem, IonLabel, IonTextarea, IonButton, IonItemSliding, IonItemOption, IonItemOptions } from '@ionic/react';
+import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle,IonSelect, IonSelectOption, IonItem, IonLabel, IonTextarea, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonIcon, IonChip } from '@ionic/react';
 import { useParams } from 'react-router';
 import { Note, useJob } from '../../hooks/useJobs'; 
 import { format } from 'date-fns';
 import { useJobs } from '../../hooks/useJobs'; 
 import { useEffect, useState } from 'react';
+import { formatSalary } from '../../utils/utils';
+import './jobDetails.css';
+import { addCircleOutline, calendarOutline, cashOutline, locationOutline, timeOutline, trashOutline } from 'ionicons/icons';
 
 export type JobStatus = 'applied' | 'interviewing' | 'offered' | 'rejected';
 
@@ -87,63 +90,90 @@ const JobDetails: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color="primary">
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Location: {job.location}</IonTitle>
+          <IonTitle>{job.companyName}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <div className="ion-padding">
-          <h1>{job.companyName} - {job.position}</h1>
-          <p>Applied on {format(new Date(job.dateApplied), 'MM/dd/yyyy')}</p>
-          <IonItem>
-            <IonLabel position="stacked">Current Status:</IonLabel>
-                    <IonSelect 
+        <div className="job-header">
+          <h1>{job.position}</h1>
+          <div className="job-meta">
+            <IonChip>
+            <IonIcon icon={locationOutline}></IonIcon>
+              <IonLabel>{job.location}</IonLabel>
+            </IonChip>
+            <IonChip>
+                <IonIcon icon={calendarOutline}></IonIcon>
+              <IonLabel>Applied {format(new Date(job.dateApplied), 'MMM d, yyyy')}</IonLabel>
+            </IonChip>
+            <IonChip>
+              <IonIcon icon={cashOutline}></IonIcon>
+              <IonLabel>{formatSalary(job.salary)}</IonLabel>
+            </IonChip>
+          </div>
+        </div>
+
+        <div className="status-section ion-padding">
+          <IonLabel position="stacked" color="medium">Application Status</IonLabel>
+          <IonSelect 
             value={currentStatus}
             onIonChange={e => handleStatusUpdate(e.detail.value as JobStatus)}
-        >
-                <IonSelectOption value="applied">Applied</IonSelectOption>
-                <IonSelectOption value="interviewing">Interviewing</IonSelectOption>
-                <IonSelectOption value="offered">Offered</IonSelectOption>
-                <IonSelectOption value="rejected">Rejected</IonSelectOption>
-          </IonSelect>      
-          </IonItem>
-          <h2>Notes:</h2>
-          <IonItem>
-                <IonTextarea
-                value={newNote}
-                onIonChange={e => setNewNote(e.detail.value ?? '')}  // Add null coalescing operator
-                placeholder="Add a new note..."
-                rows={3}
-                className="ion-margin-bottom"
-                />
-            </IonItem>
-      <IonButton expand="block" onClick={handleAddNote} disabled={!newNote.trim()}>
-        Add Note
-      </IonButton>
-      
-      <div className="notes-list">
-      {notes.map((note) => (
-        <IonItemSliding key={note.timestamp}>
-            <IonItem className="ion-margin-vertical">
-            <div className="note-container">
-                <small className="note-timestamp">
-                {format(new Date(note.timestamp), 'MMM d, yyyy h:mm a')}
-                </small>
-                <p className="note-content">{note.content}</p>
-            </div>
-            </IonItem>
-            <IonItemOptions side="end">
-            <IonItemOption color="danger" onClick={() => handleDeleteNote(note.timestamp)}>
-                Delete
-            </IonItemOption>
-            </IonItemOptions>
-        </IonItemSliding>
-        ))}
-      </div>
-          
+            interface="popover"
+            className={`status-select status-${currentStatus}`}
+          >
+            <IonSelectOption value="applied">📝 Applied</IonSelectOption>
+            <IonSelectOption value="interviewing">🗣 Interviewing</IonSelectOption>
+            <IonSelectOption value="offered">🎉 Offered</IonSelectOption>
+            <IonSelectOption value="rejected">❌ Rejected</IonSelectOption>
+          </IonSelect>
+        </div>
+
+        <div className="notes-section ion-padding">
+          <h2>Notes</h2>
+          <div className="note-input">
+            <IonTextarea
+              value={newNote}
+              onIonChange={e => setNewNote(e.detail.value ?? '')}
+              placeholder="Add a new note..."
+              rows={3}
+              className="ion-margin-bottom"
+            />
+            <IonButton 
+                expand="block" 
+                onClick={handleAddNote} 
+                disabled={!newNote.trim()}
+                className="add-note-button"
+                >
+                <IonIcon icon={addCircleOutline} slot="start"></IonIcon>
+                Add Note
+            </IonButton>
+          </div>
+
+          <div className="notes-list">
+            {notes.map((note) => (
+              <IonItemSliding key={note.timestamp}>
+                <IonItem className="note-item">
+                  <div className="note-container">
+                    <div className="note-header">
+                    <IonIcon icon={timeOutline}></IonIcon>
+                      <small className="note-timestamp">
+                        {format(new Date(note.timestamp), 'MMM d, yyyy h:mm a')}
+                      </small>
+                    </div>
+                    <p className="note-content">{note.content}</p>
+                  </div>
+                </IonItem>
+                <IonItemOptions side="end">
+                <IonItemOption color="danger" onClick={() => handleDeleteNote(note.timestamp)}>
+                      <IonIcon icon={trashOutline} slot="icon-only"></IonIcon>
+                    </IonItemOption>    
+                </IonItemOptions>
+              </IonItemSliding>
+            ))}
+          </div>
         </div>
       </IonContent>
     </IonPage>
