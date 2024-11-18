@@ -47,6 +47,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import Login from './pages/Login/Login';
+import JobForm from './components/Forms/JobForm';
 
 setupIonicReact();
 
@@ -55,10 +56,7 @@ const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   
   if (loading) {
     return <IonApp>Loading...</IonApp>;
-  }
-
-  console.log(user);
-  
+  }  
   return user ? <>{children}</> : <Redirect to="/login" />;
 };
 
@@ -90,6 +88,9 @@ const App: React.FC = () => (
                 </Route>
                 <Route exact path="/">
                   <Redirect to="/home" />
+                </Route>
+                <Route path="/job-form">
+                  <JobForm />
                 </Route>
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
