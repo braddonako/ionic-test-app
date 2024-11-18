@@ -3,9 +3,15 @@ import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useJobs } from '../../hooks/useJobs';
 
+interface Note {
+    content: string;
+    timestamp: string;
+    createdAt: number;
+  }
+
 const JobForm: React.FC = () => {
     const history = useHistory();
-    const { addJob, refreshJobs } = useJobs();
+    const { addJob } = useJobs();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [jobData, setJobData] = useState({
@@ -13,10 +19,30 @@ const JobForm: React.FC = () => {
       position: '',
       location: '',
       salary: '',
-      notes: '',
+      notes: [] as Note[],
       dateApplied: new Date().toISOString(),
       status: 'applied' as const
     });
+    const [currentNote, setCurrentNote] = useState('');
+
+    const handleAddNote = () => {
+      if (currentNote.trim()) {
+        setJobData({
+          ...jobData,
+          notes: [
+            ...jobData.notes,
+            {
+              content: currentNote.trim(),
+              timestamp: new Date().toISOString(),
+              createdAt: new Date().getTime()
+            }
+          ]
+        });
+        setCurrentNote('');
+      }
+    };
+
+ 
   
     const handleSubmit = async () => {
         setIsSubmitting(true);
@@ -99,13 +125,38 @@ const JobForm: React.FC = () => {
         </IonItem>
 
         <IonItem>
-          <IonLabel position="stacked">Notes</IonLabel>
-          <IonTextarea 
-            value={jobData.notes}
-            onIonChange={e => setJobData({...jobData, notes: e.detail.value!})}
+        <IonLabel position="stacked">Add Note</IonLabel>
+        <IonTextarea 
+            value={currentNote}
+            onIonChange={e => setCurrentNote(e.detail.value!)}
             rows={4}
-          />
+            placeholder="Enter your note here..."
+        />
+        <IonButton 
+            expand="block" 
+            className="ion-margin-top" 
+            onClick={handleAddNote}
+            disabled={!currentNote.trim()}
+        >
+            Add Note
+        </IonButton>
         </IonItem>
+
+        {jobData.notes.length > 0 && (
+        <IonItem>
+            <IonLabel position="stacked">Previous Notes</IonLabel>
+            <div className="ion-padding">
+            {jobData.notes.map((note, index) => (
+                <div key={index} className="ion-margin-bottom">
+                <p>{note.content}</p>
+                <small className="ion-text-muted">
+                    {new Date(note.timestamp).toLocaleString()}
+                </small>
+                </div>
+            ))}
+            </div>
+        </IonItem>
+        )}
 
         <IonButton expand="block" className="ion-margin-top" onClick={handleSubmit}>
           Save Job Application

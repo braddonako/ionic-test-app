@@ -1,3 +1,9 @@
 .fab-above-tabs {
     margin-bottom: 56px;
   }
+
+.job-dashboard-title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

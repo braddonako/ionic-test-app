@@ -1,11 +1,10 @@
-import { IonContent, IonPage, IonFab, IonFabButton, IonIcon } from '@ionic/react';
+import { IonContent, IonPage, IonFab, IonFabButton, IonIcon, IonText } from '@ionic/react';
 import { add } from 'ionicons/icons';
 import { useHistory, useLocation } from 'react-router';
 import { useJobs } from '../../hooks/useJobs';
 import { JobCard } from '../../components/JobCard';
-import { useEffect } from 'react';
 import { useIonViewWillEnter } from '@ionic/react';
-
+import './Home.css';
 
 const Home: React.FC = () => {
   const history = useHistory();
@@ -34,7 +33,9 @@ const Home: React.FC = () => {
       <IonContent>
         {loading && <div>Loading...</div>}
         {error && <div>{error}</div>}
-        
+        <IonText color="primary">
+          <h1 className="job-dashboard-title">AppliTrack Dashboard</h1>
+        </IonText>
         {jobs.map(job => (
           <JobCard
             key={job.id}

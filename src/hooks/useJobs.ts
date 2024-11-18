@@ -3,6 +3,12 @@ import { collection, addDoc, getDocs, updateDoc, doc, deleteDoc, query, orderBy,
 import { db } from '../firebase/config';
 import { useAuth } from '../context/AuthContext';
 
+export interface Note {
+  content: string;
+  timestamp: string;
+  createdAt: number;
+}
+
 export interface Job {
   id?: string;
   userId: string;
@@ -10,7 +16,7 @@ export interface Job {
   position: string;
   location: string;
   salary: string;
-  notes: string;
+  notes: Note[];  
   dateApplied: string;
   status: 'applied' | 'interviewing' | 'offered' | 'rejected';
   createdAt?: string;
@@ -56,8 +62,7 @@ export function useJobs() {
 
   // Fetch all jobs
   const fetchJobs = async () => {
-    if (!user) return; // Don't fetch if there's no authenticated user
-
+    if (!user) return; 
     setLoading(true);
     try {
       const jobsQuery = query(
