@@ -24,6 +24,8 @@ export interface Job {
   createdAt?: string;
 }
 
+
+// Fetch a single job by id
 export function useJob(id: string | undefined) {
   const [job, setJob] = useState<Job | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -56,6 +58,7 @@ export function useJob(id: string | undefined) {
   return { job, isLoading, error };
 }
 
+// Fetch all jobs
 export function useJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(false);
@@ -131,7 +134,7 @@ export function useJobs() {
     }
   };
 
-  // Delete job
+  // Delete job 
   const deleteJob = async (id: string) => {
     if (!user) throw new Error('Must be logged in to delete jobs');
 
