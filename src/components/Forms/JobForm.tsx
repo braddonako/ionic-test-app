@@ -1,29 +1,45 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonTextarea, IonDatetime, IonSelect, IonSelectOption, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonInput, IonTextarea, IonDatetime, IonSelect, IonSelectOption, IonButton, IonButtons, IonBackButton } from '@ionic/react';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
+import { useJobs } from '../../hooks/useJobs';
 
 const JobForm: React.FC = () => {
-  const history = useHistory();
-  const [jobData, setJobData] = useState({
-    companyName: '',
-    position: '',
-    location: '',
-    salary: '',
-    notes: '',
-    dateApplied: new Date().toISOString(),
-    status: 'applied'
-  });
-
-  const handleSubmit = () => {
-    // TODO: Handle form submission
-    console.log(jobData);
-    history.goBack();
-  };
+    const history = useHistory();
+    const { addJob, refreshJobs } = useJobs();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [jobData, setJobData] = useState({
+      companyName: '',
+      position: '',
+      location: '',
+      salary: '',
+      notes: '',
+      dateApplied: new Date().toISOString(),
+      status: 'applied' as const
+    });
+  
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
+        setError(null);
+        
+        try {
+          await addJob(jobData);
+          history.replace('/', { refresh: true }); 
+        } catch (error) {
+          console.error('Error saving job application:', error);
+          setError('Failed to save job application. Please try again.');
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
+         <IonButtons slot="start">
+            <IonBackButton defaultHref="/home" />
+          </IonButtons>
           <IonTitle>New Job Application</IonTitle>
         </IonToolbar>
       </IonHeader>

@@ -48,6 +48,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 import './theme/variables.css';
 import Login from './pages/Login/Login';
 import JobForm from './components/Forms/JobForm';
+import JobDetails from './pages/JobDetails/JobDetails';
 
 setupIonicReact();
 
@@ -91,6 +92,9 @@ const App: React.FC = () => (
                 </Route>
                 <Route path="/job-form">
                   <JobForm />
+                </Route>
+                <Route path="/job-details/:jobId">
+                  <JobDetails />
                 </Route>
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
