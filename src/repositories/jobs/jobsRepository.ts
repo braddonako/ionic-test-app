@@ -11,7 +11,6 @@ import {
     getDoc,
     Firestore 
   } from 'firebase/firestore';
-import { Note } from './models/note';
 import { Job } from './models/job';
   
 

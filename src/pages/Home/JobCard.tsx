@@ -1,8 +1,8 @@
 import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip, IonItemSliding, IonItem, IonItemOptions, IonItemOption, IonIcon } from '@ionic/react';
-import { Job } from '../../hooks/useJobs';
-import { JobStatus } from '../JobDetails/JobDetails';
 import { calendarOutline, locationOutline } from 'ionicons/icons';
+import { Job, JobStatus } from '../../repositories/jobs/models/job';
 import './jobCard.css';
+
 interface JobCardProps {
   job: Job;
   onClick: () => void;
