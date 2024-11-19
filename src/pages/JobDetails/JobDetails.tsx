@@ -1,87 +1,29 @@
 import { IonContent, IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle,IonSelect, IonSelectOption, IonItem, IonLabel, IonTextarea, IonButton, IonItemSliding, IonItemOption, IonItemOptions, IonIcon, IonChip } from '@ionic/react';
 import { useParams } from 'react-router';
-import { JobStatus, Note, useJob } from '../../hooks/useJobs'; 
+import {  useJob } from '../../hooks/useJobs'; 
 import { format } from 'date-fns';
 import { useJobs } from '../../hooks/useJobs'; 
 import { useEffect, useState } from 'react';
 import { formatSalary } from '../../utils/utils';
 import './jobDetails.css';
 import { addCircleOutline, calendarOutline, cashOutline, locationOutline, timeOutline, trashOutline } from 'ionicons/icons';
-
+import { Note } from '../../repositories/jobs/models/note';
+import { JobStatus } from '../../repositories/jobs/models/job';
+import { useJobDetails } from '../../hooks/useJobsDetails';
 
 
 const JobDetails: React.FC = () => {
   const { jobId } = useParams<{ jobId: string }>();
   const { job, isLoading, error } = useJob(jobId);
-  const { updateJob, refreshJobs } = useJobs();
-  const [currentStatus, setCurrentStatus] = useState<JobStatus>(job?.status || 'applied');
-  const [newNote, setNewNote] = useState('');
-  const [notes, setNotes] = useState<Note[]>(job?.notes || []);
-
-  const handleDeleteNote = async (timestampToDelete: string) => {
-    try {
-      const updatedNotes = notes.filter(note => note.timestamp !== timestampToDelete);
-      setNotes(updatedNotes);
-      
-      await updateJob(jobId, {
-        notes: updatedNotes,
-      });
-      await refreshJobs();
-    } catch (error) {
-      console.error('Failed to delete note:', error);
-      setNotes(notes); // Revert on error
-    }
-  };
-  
-
-
-  const handleStatusUpdate = async (newStatus: JobStatus) => {
-    setCurrentStatus(newStatus); 
-    try {
-      await updateJob(jobId, {
-        status: newStatus,
-      });
-      await refreshJobs();
-    } catch (error) {
-      console.error('Failed to update job:', error);
-      setCurrentStatus(job?.status || 'applied'); 
-    }
-  };
-
-
-  const handleAddNote = async () => {
-    if (!newNote.trim()) return;
-    
-    const newNoteObj: Note = {
-      createdAt: Date.now(),
-      content: newNote,
-      timestamp: new Date().toISOString(),
-    };
-
-    try {
-      const updatedNotes = [newNoteObj, ...notes];
-      setNotes(updatedNotes);
-      
-      await updateJob(jobId, {
-        notes: updatedNotes, 
-      });
-      await refreshJobs();
-      setNewNote(''); 
-    } catch (error) {
-      console.error('Failed to add note:', error);
-      setNotes(notes);
-    }
-  };
-
-  useEffect(() => {
-    if (job?.status) {
-      setCurrentStatus(job.status);
-    }
-    if (job?.notes) {
-      setNotes(job.notes);
-    }
-  }, [job]); 
-
+  const {
+    currentStatus,
+    newNote,
+    notes,
+    setNewNote,
+    handleDeleteNote,
+    handleStatusUpdate,
+    handleAddNote
+  } = useJobDetails(jobId, job);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error.message}</div>;

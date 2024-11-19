@@ -23,9 +23,13 @@ const Home: React.FC = () => {
       history.push(`/job-details/${jobId}`); 
   };
 
-  const handleDeleteJob = (jobId: string) => {
-    deleteJob(jobId);
-    refreshJobs();
+  const handleDeleteJob = async (jobId: string) => {
+    try {
+      await deleteJob(jobId);
+      await refreshJobs();
+    } catch (error) {
+      console.error('Failed to delete job:', error);
+    }
   };
 
   return (
