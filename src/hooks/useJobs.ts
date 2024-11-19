@@ -34,7 +34,7 @@ export function useJobs() {
     setLoading(true);
     try {
       const newJob = await jobsRepo.create(user.uid, jobData);
-      await fetchJobs(); // Refresh jobs after adding
+      await fetchJobs(); 
       return newJob;
     } catch (err) {
       console.error('Error adding job:', err);
@@ -50,7 +50,7 @@ export function useJobs() {
     setLoading(true);
     try {
       await jobsRepo.update(id, updates);
-      await fetchJobs(); // Refresh jobs after updating
+      await fetchJobs(); 
     } catch (err) {
       console.error('Error updating job:', err);
       throw new Error('Failed to update job');
@@ -65,7 +65,7 @@ export function useJobs() {
     setLoading(true);
     try {
       await jobsRepo.delete(id);
-      await fetchJobs(); // Refresh jobs after deleting
+      await fetchJobs(); 
     } catch (err) {
       console.error('Error deleting job:', err);
       throw new Error('Failed to delete job');
